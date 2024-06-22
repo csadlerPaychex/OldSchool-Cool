@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserInterface;
 
 namespace DiceRollGame
 {
@@ -13,20 +14,19 @@ namespace DiceRollGame
         //Currently there are two states, ACTIVE and INACTIVE
         private List<string> GameTypes { get; } = new List<string>() { "Guess The Roll" };
 
-        public GameSession(UserInterface input) 
+        public GameSession() 
         {
-            string selectedState = string.Empty;
-            Console.WriteLine("Select from Available Game Types:");
-            SessionGameType = input.UpdateInputSelectionList(GameTypes);
+            SessionGameType = "";
             GameState = "ACTIVE";
         }
-        public GameSession PlayTheGame(GameSession session, UserInterface input)
+        public void PlayTheGame(UserInput input)
         {
-            if (session.SessionGameType == "Guess The Roll")
-                { PlayGuessTheRoll(session, input); }
-            return session;
+            Console.WriteLine("Select from Available Game Types:");
+            SessionGameType = input.UpdateInputSelectionList(GameTypes);
+            if (SessionGameType == "Guess The Roll")
+                { PlayGuessTheRoll(input); }
         }
-        private void PlayGuessTheRoll(GameSession session, UserInterface input)
+        private void PlayGuessTheRoll(UserInput input)
         {
             Console.WriteLine("****************");
             Console.WriteLine("*Guess The Roll*");
@@ -67,14 +67,14 @@ namespace DiceRollGame
                 string playAgain = input.UpdateInputSelectionList(options);
                 if (playAgain == "Yes")
                 {
-                    PlayGuessTheRoll(session, input);
+                    PlayGuessTheRoll(input);
                 }
                 else
                 {
-                    session.GameState = "INACTIVE";
+                    GameState = "INACTIVE";
                 }
 
-            } while (session.GameState == "ACTIVE" );
+            } while (GameState == "ACTIVE" );
         }
         
     }

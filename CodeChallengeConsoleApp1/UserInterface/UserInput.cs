@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiceRollGame
+namespace UserInterface
 {
-    internal class UserInterface
+    internal class UserInput
     {
         public string CurrentInput { get; private set; } = string.Empty;
         public string LastInput { get; private set; } = string.Empty;
-        public UserInterface() 
+        public UserInput()
         {
             CurrentInput = "";
         }
@@ -35,13 +35,13 @@ namespace DiceRollGame
             } while (!selectionValid);
             return input;
         }
-        private string  gatherInput() 
+        private string gatherInput()
         {
             LastInput = CurrentInput;
             var input = "";
             do { Console.WriteLine("Enter Selection"); input = Console.ReadLine(); } while (input == "" || input == null);
             return input;
         }
-      
+
     }
 }
