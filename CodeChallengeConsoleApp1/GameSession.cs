@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Services;
 using UserInterface;
 
 namespace DiceRollGame
@@ -26,18 +27,25 @@ namespace DiceRollGame
             if (SessionGameType == "Guess The Roll")
                 { PlayGuessTheRoll(input); }
         }
-        private void PlayGuessTheRoll(UserInput input)
+        private async void PlayGuessTheRoll(UserInput input)
         {
             Console.WriteLine("****************");
             Console.WriteLine("*Guess The Roll*");
             Console.WriteLine("****************");
-
+            Console.ReadKey(true);
             List<string> validGuesses = new List<string>() { "1","2","3","4","5","6"};
             List<string> options = new List<string>() { "Yes", "No" };
+            var cancellationTokenSource = new CancellationTokenSource();
+            Sprite rollingDice = new Sprite("RollingDice");
+            var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
+            if (Console.ReadKey(true).ToString() != "")
+                cancellationTokenSource.Cancel();
+            diceSprite.Wait(600000);
             do
             {
-                Console.WriteLine("Rolling the Dice");
-                Thread.Sleep(1500);
+                //Console.WriteLine("Rolling the Dice");
+                //Console.Clear();
+                //do { rollingDice.DisplaySprite();  } while (!Console.KeyAvailable);
                 DiceRoll currentRoll = new DiceRoll(1, 6);
                 string correctGuess = currentRoll.TotalResult.ToString();
                 //Console.WriteLine($"{correctGuess}");

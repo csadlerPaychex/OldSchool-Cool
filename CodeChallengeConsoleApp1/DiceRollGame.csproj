@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <None Remove="Resources\Banner.txt" />
+    <None Remove="Resources\RollingDice.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\RollingDice.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Banner.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

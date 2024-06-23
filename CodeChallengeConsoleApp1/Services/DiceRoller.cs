@@ -1,11 +1,10 @@
-﻿using DiceRollGame;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiceRollGame
+namespace Services
 {
     internal class Die
     {
@@ -40,7 +39,7 @@ namespace DiceRollGame
         }
 
         //Method to separate rolling the act of rolling the dice from the act of selecting the dice to roll
-        private(int, List<int> ) RollTheDice(Die die, int totalRolls)
+        private (int, List<int>) RollTheDice(Die die, int totalRolls)
         {
             int sides = die.DieSides;
             int rollsRemaining = totalRolls;

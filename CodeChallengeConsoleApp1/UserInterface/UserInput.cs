@@ -21,6 +21,7 @@ namespace UserInterface
             bool selectionValid = false;
             do
             {
+                Console.WriteLine("Choose from the following list");
                 foreach (var selection in selections)
                 {
                     Console.WriteLine($"{selection}");
