@@ -8,6 +8,7 @@ namespace UserInterface
 {
     internal class UserInput
     {
+        public string NewLine { get; private set; } = string.Empty;
         public string CurrentInput { get; private set; } = string.Empty;
         public string LastInput { get; private set; } = string.Empty;
         public string[] SelectionsDisplay { get; private set; } = new string[20];
@@ -31,6 +32,7 @@ namespace UserInterface
                     Console.WriteLine($"{selection}");
                 }
                 input = gatherInput();
+                Console.WriteLine(input);
                 selectionValid = selections.Contains(input);
                 if (!selectionValid)
                 {
@@ -70,14 +72,26 @@ namespace UserInterface
         private string gatherInput(bool suppressOutput = false)
         {
             LastInput = CurrentInput;
-            var input = "";
+            string input = "";
+            string inputLine = "";
+            string completedInput = "";
             do
             {
-                if (!suppressOutput)
-                    Console.WriteLine("Enter Selection");
-                input = Console.ReadLine();
-            } while (input == "" || input == null);
-            return input;
+                // if (!suppressOutput) Console.WriteLine("Enter Selection");
+                //var keyPress = Console.ReadKey().ToString();
+                input = Console.ReadKey(true).KeyChar.ToString() ; //Convert.ToChar(keyPress).ToString();
+                if ( input == "\r")
+                {
+                    completedInput = inputLine;
+                }
+                else
+                {
+                    inputLine += input;
+
+                    if (!suppressOutput) Console.Write(input);
+                }
+            } while (completedInput == "");
+            return inputLine;
         }
 
     }

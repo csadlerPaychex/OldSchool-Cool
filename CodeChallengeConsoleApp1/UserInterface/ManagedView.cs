@@ -12,7 +12,7 @@ namespace UserInterface
         public Sprite CurrentSprite { get; private set; }
         public UserInput CurrentInput { get; private set; }
         public UserMessages CurrentMessages { get; private set; }
-        public UserOptions CurrentOptions { get; private set; }
+        //public UserOptions CurrentOptions { get; private set; }
         private readonly int DisplayLines;
         private static readonly int SpriteWidth = 60;
         public List<string[]> DisplayFrames { get; private set; } = new List<string[]>();
@@ -23,7 +23,7 @@ namespace UserInterface
             CurrentInput = input;
             DisplayLines = 20;
             CurrentMessages = new UserMessages([""]); ;
-            CurrentOptions = new UserOptions([""]);
+            //CurrentOptions = new UserOptions([""]);
             RenderDisplayFrames(CurrentSprite, CurrentInput);
         }
         public ManagedView(Sprite sprite, UserInput input, UserMessages messages, UserOptions options)
@@ -32,7 +32,7 @@ namespace UserInterface
             CurrentInput = input;
             DisplayLines = 20;
             CurrentMessages = messages;
-            CurrentOptions = options;
+            //CurrentOptions = options;
             RenderDisplayFrames(CurrentSprite, CurrentInput);
         }
         public async Task DisplayInterface(CancellationTokenSource token)
