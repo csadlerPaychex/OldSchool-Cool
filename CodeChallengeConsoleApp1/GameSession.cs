@@ -37,8 +37,10 @@ namespace DiceRollGame
             List<string> options = new List<string>() { "Yes", "No" };
             var cancellationTokenSource = new CancellationTokenSource();
             Sprite rollingDice = new Sprite("RollingDice");
-            var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
-            if (Console.ReadKey(true).ToString() != "")
+            ManagedView diceRoll = new ManagedView(rollingDice, input);  
+            var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
+            //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
+            if (Console.ReadLine() != "E")
                 cancellationTokenSource.Cancel();
             diceSprite.Wait(600000);
             do
