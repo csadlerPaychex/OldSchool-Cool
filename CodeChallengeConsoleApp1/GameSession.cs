@@ -40,7 +40,7 @@ namespace DiceRollGame
             ManagedView diceRoll = new ManagedView(rollingDice, input);  
             var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
             //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
-            if (Console.ReadKey(true).ToString() != "")
+            if (Console.ReadLine() != "E")
                 cancellationTokenSource.Cancel();
             guessTheRollDisplay.Wait(600000);
             do

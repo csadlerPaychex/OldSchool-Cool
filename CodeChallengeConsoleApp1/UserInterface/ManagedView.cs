@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiceRollGame.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace UserInterface
     {
         public Sprite CurrentSprite { get; private set; }
         public UserInput CurrentInput { get; private set; }
+        public UserMessages CurrentMessages { get; private set; }
+        public UserOptions CurrentOptions { get; private set; }
         private readonly int DisplayLines;
         private static readonly int SpriteWidth = 60;
         public List<string[]> DisplayFrames { get; private set; } = new List<string[]>();
@@ -19,21 +22,35 @@ namespace UserInterface
             CurrentSprite = sprite;
             CurrentInput = input;
             DisplayLines = sprite.DisplayLines;
+            CurrentMessages = new UserMessages([""]); ;
+            CurrentOptions = new UserOptions([""]);
+            RenderDisplayFrames(CurrentSprite, CurrentInput);
+        }
+            public ManagedView(Sprite sprite, UserInput input, UserMessages messages, UserOptions options)
+        {
+            CurrentSprite = sprite;
+            CurrentInput = input;
+            DisplayLines = sprite.DisplayLines;
+            CurrentMessages = messages;
+            CurrentOptions = options;
             RenderDisplayFrames(CurrentSprite, CurrentInput);
         }
         public async Task DisplayInterface(CancellationTokenSource token)
         {
-            //If the call includes a cancellation token, it can be persisted. Otherwise, send to the draw once service.
             do { await WritePersistedDisplay(0, token, CurrentInput); } while (!token.IsCancellationRequested);
             return;
         }
         public async Task DisplayInterface(CancellationTokenSource token, UserInput input)
         {
-            //If the call includes a cancellation token, it can be persisted. Otherwise, send to the draw once service.
             do { await WritePersistedDisplay(0, token, input); } while (!token.IsCancellationRequested);
             return;
         }
-        public void DisplayMessage(string message) { Messages.Add(message); }
+        public void DisplayMessage(string message, bool clearMessages) 
+        {
+            if (clearMessages) { Messages.Clear(); }
+            Messages.Add(message); 
+            RenderDisplayFrames(CurrentSprite, CurrentInput);
+        }
         private async Task WritePersistedDisplay(int delay, CancellationTokenSource token, UserInput input)
         {
             try
@@ -50,6 +67,7 @@ namespace UserInterface
                     {
                         Console.WriteLine(line);
                     }
+                    
                     //Delay for 40 milliseconds to put FR at 25 per second
                     { await Task.Delay(150, token.Token); Console.Clear(); }
                 }
