@@ -42,7 +42,7 @@ namespace DiceRollGame
             //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
             if (Console.ReadLine() != "E")
                 cancellationTokenSource.Cancel();
-            diceSprite.Wait(600000);
+            guessTheRollDisplay.Wait(600000);
             do
             {
                 //Console.WriteLine("Rolling the Dice");

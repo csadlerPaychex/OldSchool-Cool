@@ -8,7 +8,7 @@ namespace UserInterface
 {
     internal class UserMessages
     {
-        public List<string> Messages = new List<string>();
+        public List<string> Messages { get; private set; }
 
         public UserMessages(List<string> messages)
         {

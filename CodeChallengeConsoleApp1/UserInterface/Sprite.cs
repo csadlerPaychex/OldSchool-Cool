@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,30 +11,36 @@ namespace UserInterface
     internal class Sprite
     {
         public string SpriteName { get; private set; }
-        public string[] TextArt { get; set; }
+        public string[] TextArt { get; private set; }
+        public List<string[]> Frames { get; private set; } = new List<string[]>();
+        //Dictates # of lines to be used in a sprite display
+        public readonly int DisplayLines;
 
-        public Sprite(string fileName) 
+        public Sprite(string fileName, int displayLines = 20)
         {
             SpriteName = fileName;
+            DisplayLines = displayLines;
             TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
+            RenderSprites(TextArt, 0);
         }
         public void DisplaySprite()
         {
-             WriteSpriteFrame(TextArt, 0);
+            //Write once, used for static in line displays.
+            WriteSpriteFrame(TextArt, 0);
         }
         public async Task DisplaySprite(CancellationTokenSource token)
         {
             //If the call includes a cancellation token, it can be persisted. Otherwise, send to the draw once service.
-            do { await WritePersistedSprite(TextArt, 0, token); } while (!token.IsCancellationRequested);
+            do { await WritePersistedSprite(0, token); } while (!token.IsCancellationRequested);
             return;
         }
-        public void RollSprite(int speed) 
+        public void RollSprite(int speed)
         {
-           WriteSpriteFrame(TextArt, speed);
+            WriteSpriteFrame(TextArt, speed);
         }
         private void WriteSpriteFrame(string[] frame, int delay)
         {
-            foreach (string line in frame) 
+            foreach (string line in frame)
             {
                 if (!line.Contains("NEXT_FRAME"))
                 {
@@ -41,24 +48,47 @@ namespace UserInterface
                     Thread.Sleep(delay);
                 }
                 //Delay for 40 milliseconds to put FR at 25 per second
-                else { Thread.Sleep(150); Console.Clear();  }
-                
+                else { Thread.Sleep(150); Console.Clear(); }
+
             }
         }
-        //This is meant to persist sprites until disposed, while the other is meant to draw once.
-        private async Task WritePersistedSprite(string[] frame, int delay, CancellationTokenSource token)
+        private void RenderSprites(string[] textArt, int cursor)
+        {
+            int frameCursor = cursor + 1;
+            int nextFrameCursor = textArt.ToList().FindIndex(cursor, item => item.Contains("NEXT_FRAME"));
+            bool moreFrames = nextFrameCursor != -1;
+            if (!moreFrames) { nextFrameCursor = textArt.Length; }
+            List<string> currentSprite = textArt[cursor..nextFrameCursor].ToList();
+            int spriteLines = currentSprite.Count;
+            //If sprite is larger than range, cut off sprite
+            if (spriteLines > DisplayLines)
+            {
+                currentSprite.RemoveRange(DisplayLines, spriteLines - DisplayLines);
+                spriteLines = DisplayLines;
+            }
+
+            if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat("", DisplayLines - spriteLines)); }
+            string[] renderedFrame = new string[DisplayLines];
+            renderedFrame = currentSprite.ToArray();
+            Frames.Add(renderedFrame);
+            if (moreFrames)
+                RenderSprites(textArt, nextFrameCursor + 1);
+        }
+        //This is meant to persist sprites until disposed, while the other is meant to draw once. 
+        private async Task WritePersistedSprite(int delay, CancellationTokenSource token)
         {
             try
             {
-                foreach (string line in frame)
+                foreach (string[] frame in Frames)
                 {
-                    if (!line.Contains("NEXT_FRAME"))
+                    foreach (string line in frame)
                     {
                         Console.WriteLine(line);
                         await Task.Delay(delay, token.Token);
+
                     }
                     //Delay for 40 milliseconds to put FR at 25 per second
-                    else { await Task.Delay(150, token.Token); Console.Clear(); }
+                    { await Task.Delay(150, token.Token); Console.Clear(); }
                 }
                 return;
             }
