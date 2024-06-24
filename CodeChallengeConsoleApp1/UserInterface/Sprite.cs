@@ -15,11 +15,13 @@ namespace UserInterface
         public List<string[]> Frames { get; private set; } = new List<string[]>();
         //Dictates # of lines to be used in a sprite display
         public readonly int DisplayLines;
+        public readonly int DisplayWidth;
 
-        public Sprite(string fileName, int displayLines = 20)
+        public Sprite(string fileName, int displayLines = 20, int displayWidth = 60)
         {
             SpriteName = fileName;
             DisplayLines = displayLines;
+            DisplayWidth = displayWidth;
             TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
             RenderSprites(TextArt, 0);
         }
@@ -60,6 +62,7 @@ namespace UserInterface
             if (!moreFrames) { nextFrameCursor = textArt.Length; }
             List<string> currentSprite = textArt[cursor..nextFrameCursor].ToList();
             int spriteLines = currentSprite.Count;
+
             //If sprite is larger than range, cut off sprite
             if (spriteLines > DisplayLines)
             {
@@ -68,6 +71,17 @@ namespace UserInterface
             }
 
             if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat("", DisplayLines - spriteLines)); }
+
+            //Set sprite width to display width
+            for (int i = 0; i < spriteLines; i++)
+            {
+                string line = currentSprite[i];
+                if (line.Length < 0) { currentSprite[i] = new string(' ', DisplayWidth); }
+                else if (line.Length < DisplayWidth) { currentSprite[i] += new string(' ', DisplayWidth - line.Length); }
+                else if (line.Length > DisplayWidth) { currentSprite[i] = line[..DisplayWidth]; }
+                else { currentSprite[i] = line; }
+            }
+
             string[] renderedFrame = new string[DisplayLines];
             renderedFrame = currentSprite.ToArray();
             Frames.Add(renderedFrame);
