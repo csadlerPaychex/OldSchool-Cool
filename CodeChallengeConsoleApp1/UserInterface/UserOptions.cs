@@ -8,12 +8,11 @@ namespace UserInterface
 {
     internal class UserOptions
     {
-        public List<string> Options { get; private set; }
+        public List<string> Options { get; private set; } = new List<string>();
         public int DisplayLength { get; private set; }
-        public UserOptions(List<string> options, int displayLength = 20)
+        public UserOptions(int displayLength = 20)
         {
             DisplayLength = displayLength;
-            Options = options.GetRange(0, DisplayLength);
         }
         public void ReplaceOptions(List<string> options) { Options = options.GetRange(0,DisplayLength); }
         public void ClearOptions() { Options.Clear(); }

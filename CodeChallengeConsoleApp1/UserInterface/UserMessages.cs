@@ -8,11 +8,10 @@ namespace UserInterface
 {
     internal class UserMessages
     {
-        public List<string> Messages { get; private set; }
+        public List<string> Messages { get; private set; } = new List<string>();
 
-        public UserMessages(List<string> messages)
+        public UserMessages()
         {
-            Messages = messages;
         }
 
         public void AddMessage(string message, bool clear = false)

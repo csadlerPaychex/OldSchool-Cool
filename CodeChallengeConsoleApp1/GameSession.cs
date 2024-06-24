@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Services;
@@ -37,12 +38,17 @@ namespace DiceRollGame
             List<string> options = new List<string>() { "Yes", "No" };
             var cancellationTokenSource = new CancellationTokenSource();
             Sprite rollingDice = new Sprite("RollingDice");
+            ManagedInput managedInput = new ManagedInput();
+            UserMessages userMessages = new UserMessages();
+            UserOptions userOptions = new UserOptions(20);
             ManagedView diceRoll = new ManagedView(rollingDice, input);  
-            var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
+            UserInterface.UserInterface userInterface = new UserInterface.UserInterface(rollingDice, managedInput, userMessages, userOptions);
+            //var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
             //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
-            if (Console.ReadLine() != "E")
+            var displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
+            if (Console.ReadLine() == "e")
                 cancellationTokenSource.Cancel();
-            guessTheRollDisplay.Wait(600000);
+            displayScreen.Wait(600000);
             do
             {
                 //Console.WriteLine("Rolling the Dice");

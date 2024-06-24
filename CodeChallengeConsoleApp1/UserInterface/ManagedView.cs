@@ -1,5 +1,4 @@
-﻿using DiceRollGame.UserInterface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +21,7 @@ namespace UserInterface
             CurrentSprite = sprite;
             CurrentInput = input;
             DisplayLines = 20;
-            CurrentMessages = new UserMessages([""]); ;
+            //CurrentMessages = new UserMessages([""]); ;
             //CurrentOptions = new UserOptions([""]);
             RenderDisplayFrames(CurrentSprite, CurrentInput);
         }
@@ -75,6 +74,7 @@ namespace UserInterface
             }
             catch { return; }
         }
+       
         //This writes each display frame so that the selections are included on the right side. 
         private void RenderDisplayFrames(Sprite currentSprite, UserInput currentInput)
         {
