@@ -38,7 +38,7 @@ namespace UserInterface
                     {
                         Console.Clear();
                         WriteDisplayFrame(0, frame);
-                        await Task.Delay(150);
+                        await Task.Delay(250);
                     }
                 }
                 
