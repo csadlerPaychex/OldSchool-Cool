@@ -42,11 +42,9 @@ namespace DiceRollGame
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
             UserInterface.UserInterface userInterface = new UserInterface.UserInterface(rollingDice, managedInput, userMessages, userOptions);
-            //var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
-            //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
             var displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
-            if (Console.ReadLine() == "e")
-                cancellationTokenSource.Cancel();
+            //if (Console.ReadLine() == "e")
+                //cancellationTokenSource.Cancel();
             //displayScreen.Wait(600000);
             do
             {
