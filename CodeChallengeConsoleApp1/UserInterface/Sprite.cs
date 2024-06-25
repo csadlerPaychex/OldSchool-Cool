@@ -17,7 +17,7 @@ namespace UserInterface
         public readonly int DisplayLines;
         public readonly int DisplayWidth;
 
-        public Sprite(string fileName, int displayLines = 20, int displayWidth = 60)
+        public Sprite(string fileName, int displayLines = 10, int displayWidth = 40)
         {
             SpriteName = fileName;
             DisplayLines = displayLines;
@@ -70,7 +70,7 @@ namespace UserInterface
                 spriteLines = DisplayLines;
             }
 
-            if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat("", DisplayLines - spriteLines)); }
+            if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat(" ", DisplayLines - spriteLines)); }
 
             //Set sprite width to display width
             for (int i = 0; i < spriteLines; i++)

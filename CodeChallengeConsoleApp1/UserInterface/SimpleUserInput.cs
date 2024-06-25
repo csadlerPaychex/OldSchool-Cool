@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface
 {
-    internal class UserInput
+    internal class SimpleUserInput
     {
         public string NewLine { get; private set; } = string.Empty;
         public string CurrentInput { get; private set; } = string.Empty;
@@ -14,7 +14,7 @@ namespace UserInterface
         public string[] SelectionsDisplay { get; private set; } = new string[20];
         public List<string> MessageDisplay { get; private set; } = new List<string>();
         private readonly int DisplayLines;
-        public UserInput(int displayLines = 20)
+        public SimpleUserInput(int displayLines = 20)
         {
             CurrentInput = "";
             DisplayLines = displayLines;

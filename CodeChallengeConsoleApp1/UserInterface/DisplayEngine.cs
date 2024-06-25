@@ -7,7 +7,7 @@ using UserInterface;
 
 namespace UserInterface
 {
-    internal class UserInterface
+    internal class DisplayEngine
     {
 
         public Sprite CurrentSprite { get; private set; }
@@ -18,11 +18,12 @@ namespace UserInterface
         private readonly int SpriteWidth;
         public List<string[]> DisplayFrames { get; private set; } = new List<string[]>();
         public List<string> Messages { get; private set; } = new List<string>();
-        public UserInterface(Sprite sprite, ManagedInput input, UserMessages messages, UserOptions options)
+        public DisplayEngine(Sprite sprite, ManagedInput input, UserMessages messages, UserOptions options)
         {
             CurrentSprite = sprite;
             CurrentInput = input;
             DisplayLines = sprite.DisplayLines;
+            SpriteWidth = sprite.DisplayWidth;
             CurrentMessages = messages;
             CurrentOptions = options;
         }
@@ -43,8 +44,8 @@ namespace UserInterface
                         string optionLine = "";
                         try { optionLine = CurrentOptions.Options[i]; }
                         catch { }
-                        Console.WriteLine(line + optionLine);
-                        //await Task.Delay(delay, token.Token);
+                        Console.WriteLine(line + "|" + optionLine);
+                        await Task.Delay(delay, token.Token);
                         i++;
                     }
                     Console.WriteLine(new string('-', SpriteWidth));
@@ -55,7 +56,7 @@ namespace UserInterface
                     Console.WriteLine(CurrentInput.NewLine);
 
                     //Delay for 40 milliseconds to put FR at 25 per second
-                    await Task.Delay(15, token.Token); 
+                    await Task.Delay(150, token.Token); 
                     Console.Clear(); 
                 }
                 return;

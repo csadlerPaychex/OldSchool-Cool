@@ -77,4 +77,3 @@ NEXT_FRAME 7
     \O    O\ O/   \/_____O/
      \O____O\/ )           ) 
     (
-NEXT_FRAME 8

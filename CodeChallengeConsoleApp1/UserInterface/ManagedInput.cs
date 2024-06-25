@@ -27,7 +27,6 @@ namespace UserInterface
                 {
                     NewLine = "";
                     messages.AddMessage("Selection invalid, please choose from the options list");
-                    //Console.WriteLine("Selection invalid, please choose from the options list");
                 }
                 CurrentInput = input;
             } while (!selectionValid);
@@ -45,13 +44,13 @@ namespace UserInterface
                 input = Console.ReadKey(true).KeyChar.ToString() ;
                 if ( input == "\r")
                 {
+                    NewLine = "";
                     completedInput = inputLine;
                 }
                 else
                 {
                     inputLine += input;
                     NewLine = inputLine;
-                    //if (!suppressOutput) Console.Write(input);
                 }
             } while (completedInput == "");
             return completedInput;

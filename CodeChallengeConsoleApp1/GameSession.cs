@@ -21,14 +21,14 @@ namespace DiceRollGame
             SessionGameType = "";
             GameState = "ACTIVE";
         }
-        public void PlayTheGame(UserInput input)
+        public void PlayTheGame(SimpleUserInput input)
         {
             Console.WriteLine("Select from Available Game Types:");
             SessionGameType = input.UpdateInputSelectionList(GameTypes);
             if (SessionGameType == "Guess The Roll")
                 { PlayGuessTheRoll(input); }
         }
-        private async void PlayGuessTheRoll(UserInput input)
+        private async void PlayGuessTheRoll(SimpleUserInput input)
         {
             Console.WriteLine("****************");
             Console.WriteLine("*Guess The Roll*");
@@ -41,43 +41,39 @@ namespace DiceRollGame
             ManagedInput managedInput = new ManagedInput();
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
-            UserInterface.UserInterface userInterface = new UserInterface.UserInterface(rollingDice, managedInput, userMessages, userOptions);
+            UserInterface.DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
             var displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
-            //if (Console.ReadLine() == "e")
-                //cancellationTokenSource.Cancel();
-            //displayScreen.Wait(600000);
             do
             {
-                //Console.WriteLine("Rolling the Dice");
-                //Console.Clear();
-                //do { rollingDice.DisplaySprite();  } while (!Console.KeyAvailable);
                 DiceRoll currentRoll = new DiceRoll(1, 6);
                 string correctGuess = currentRoll.TotalResult.ToString();
-                //Console.WriteLine($"{correctGuess}");
                 string currentGuess = "";
                 int remainingGuesses = 3;
                 
                 do
                 {
                     userMessages.AddMessage($"You have {remainingGuesses} guesses");
-                    //Console.WriteLine($"You have {remainingGuesses} guesses");
                     userMessages.AddMessage("Make a guess");
-                    //Console.WriteLine("Make a guess");
-                    currentGuess = managedInput.ManageInputSelection(validGuesses, userMessages, userOptions); //input.UpdateInputSelectionList(validGuesses);
+                    currentGuess = managedInput.ManageInputSelection(validGuesses, userMessages, userOptions);
                     remainingGuesses--;
                 } while (currentGuess != correctGuess && remainingGuesses > 0);
                 bool victory =  currentGuess == correctGuess;
                 if (victory)
                 {
-                    cancellationTokenSource.Cancel();
-                    Console.WriteLine("You Win!!!!");
-                    Console.WriteLine($"Score: {remainingGuesses}");
+                    userMessages.Clear();
+                    userMessages.AddMessage("You Win!!!!");
+                    userMessages.AddMessage($"Score: {remainingGuesses}");
                 }
                 else 
                 {
-                    cancellationTokenSource.Cancel();
-                    Console.WriteLine("So Sorry, you FAILED!!!!");
+                    userMessages.Clear();
+                    userMessages.AddMessage("So Sorry, you FAILED!!!!");
                 }
+                //await displayScreen;
+                Console.ReadKey(true);
+                cancellationTokenSource.Cancel();
+                await displayScreen;
+                Console.Clear();
                 Console.WriteLine("");
                 Console.WriteLine("************");
                 Console.WriteLine("Play Again?");

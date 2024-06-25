@@ -10,7 +10,7 @@ namespace DiceRollGame
         {
             Sprite banner = new Sprite("Banner");
             var cancellationTokenSource = new CancellationTokenSource();
-            UserInput currentInput  = new UserInput();
+            SimpleUserInput currentInput  = new SimpleUserInput();
 
             var bannerRun = IntroBanner(cancellationTokenSource, banner);
             if (Console.ReadKey(true).ToString() != "" )
