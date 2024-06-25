@@ -26,9 +26,9 @@ namespace Infocalm
             Console.WriteLine("Select from Available Game Types:");
             SessionGameType = input.UpdateInputSelectionList(GameTypes);
             if (SessionGameType == "Guess The Roll")
-                { PlayGuessTheRoll(input); }
+                { PlayGuessTheRoll(); }
         }
-        private async void PlayGuessTheRoll(SimpleUserInput input)
+        private async Task PlayGuessTheRoll()
         {
             Console.WriteLine("****************");
             Console.WriteLine("*Guess The Roll*");
@@ -36,13 +36,14 @@ namespace Infocalm
             Console.ReadKey(true);
             List<string> validGuesses = new List<string>() { "1","2","3","4","5","6"};
             List<string> options = new List<string>() { "Yes", "No" };
-            var cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             Sprite rollingDice = new Sprite("RollingDice");
+            SimpleUserInput simpleInput = new SimpleUserInput();
             ManagedInput managedInput = new ManagedInput();
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
-            UserInterface.DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
-            var displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
+            DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
+            Task displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
             do
             {
                 DiceRoll currentRoll = new DiceRoll(1, 6);
@@ -75,16 +76,19 @@ namespace Infocalm
                 Console.Clear();
                 Console.WriteLine("");
                 Console.WriteLine("************");
+                
                 Console.WriteLine("Play Again?");
-                string playAgain = input.UpdateInputSelectionList(options);
+                string playAgain = simpleInput.UpdateInputSelectionList(options);
                 if (playAgain == "Yes")
                 {
-                    PlayGuessTheRoll(input);
+                    await PlayGuessTheRoll();
                 }
                 else
                 {
                     GameState = "INACTIVE";
                 }
+
+                Console.ReadKey(true);
 
             } while (GameState == "ACTIVE" );
         }
