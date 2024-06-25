@@ -26,6 +26,7 @@ namespace UserInterface
                 selectionValid = selections.Contains(input);
                 if (!selectionValid)
                 {
+                    messages.AddMessage(input);
                     NewLine = "";
                     messages.AddMessage("Selection invalid, please choose from the options list");
                 }
@@ -47,6 +48,12 @@ namespace UserInterface
                 {
                     NewLine = "";
                     completedInput = inputLine;
+                }
+                else if (input == "\b")
+                {
+                    
+                    inputLine = inputLine.Remove(inputLine.Length -1, 1);
+                    NewLine = inputLine;  
                 }
                 else
                 {

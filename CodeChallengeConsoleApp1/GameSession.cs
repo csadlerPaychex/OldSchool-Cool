@@ -18,17 +18,21 @@ namespace Infocalm
 
         public GameSession() 
         {
-            SessionGameType = "";
+            SessionGameType = "SESSION";
             GameState = "ACTIVE";
         }
-        public void PlayTheGame(SimpleUserInput input)
+        public async Task PlayTheGame()
         {
             Console.WriteLine("Select from Available Game Types:");
-            SessionGameType = input.UpdateInputSelectionList(GameTypes);
+
+            SimpleUserInput simpleInput = new SimpleUserInput();
+            SessionGameType = simpleInput.UpdateInputSelectionList(GameTypes);
+            CancellationTokenSource sessionCanceled = new CancellationTokenSource();
             if (SessionGameType == "Guess The Roll")
-                { PlayGuessTheRoll(); }
+                { Task game = PlayGuessTheRoll(sessionCanceled, simpleInput);  game.Wait(); }
+            return;
         }
-        private async Task PlayGuessTheRoll()
+        private async Task PlayGuessTheRoll(CancellationTokenSource session, SimpleUserInput simpleInput)
         {
             Console.WriteLine("****************");
             Console.WriteLine("*Guess The Roll*");
@@ -36,14 +40,13 @@ namespace Infocalm
             Console.ReadKey(true);
             List<string> validGuesses = new List<string>() { "1","2","3","4","5","6"};
             List<string> options = new List<string>() { "Yes", "No" };
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource gameCancelled = new CancellationTokenSource();
             Sprite rollingDice = new Sprite("RollingDice");
-            SimpleUserInput simpleInput = new SimpleUserInput();
             ManagedInput managedInput = new ManagedInput();
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
             DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
-            Task displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
+            Task displayScreen = userInterface.DisplayInterface(gameCancelled);
             do
             {
                 DiceRoll currentRoll = new DiceRoll(1, 6);
@@ -70,9 +73,9 @@ namespace Infocalm
                     userMessages.Clear();
                     userMessages.AddMessage("So Sorry, you FAILED!!!!");
                 }
-                Console.ReadKey(true);
-                cancellationTokenSource.Cancel();
+                gameCancelled.Cancel();
                 await displayScreen;
+                Console.ReadKey(true);
                 Console.Clear();
                 Console.WriteLine("");
                 Console.WriteLine("************");
@@ -81,16 +84,16 @@ namespace Infocalm
                 string playAgain = simpleInput.UpdateInputSelectionList(options);
                 if (playAgain == "Yes")
                 {
-                    await PlayGuessTheRoll();
+                    await PlayGuessTheRoll(session, simpleInput);
                 }
                 else
                 {
                     GameState = "INACTIVE";
-                }
-
-                Console.ReadKey(true);
+                    session.Cancel();
+                }  
 
             } while (GameState == "ACTIVE" );
+            return;
         }
         
     }

@@ -9,15 +9,15 @@ namespace UserInterface
 {
     internal class DisplayEngine
     {
+        //Current Needs; Method to point to new sprite (needed in the case multiple sprites need to persist)
 
         public Sprite CurrentSprite { get; private set; }
         public ManagedInput CurrentInput { get; private set; }
         public UserMessages CurrentMessages { get; private set; }
         public UserOptions CurrentOptions { get; private set; }
+        //These will currently break if a sprite is updated to different size
         private readonly int DisplayLines;
         private readonly int SpriteWidth;
-        public List<string[]> DisplayFrames { get; private set; } = new List<string[]>();
-        public List<string> Messages { get; private set; } = new List<string>();
         public DisplayEngine(Sprite sprite, ManagedInput input, UserMessages messages, UserOptions options)
         {
             CurrentSprite = sprite;
@@ -27,21 +27,25 @@ namespace UserInterface
             CurrentMessages = messages;
             CurrentOptions = options;
         }
+        //Invoke to create a persistent display interface.
         public async Task DisplayInterface(CancellationTokenSource token)
         {
             do 
             { 
                 foreach (string[] frame in CurrentSprite.Frames)
                 {
-                    Console.Clear();
-                    WriteFrame(0, frame);
-                    await Task.Delay(150);
+                    if (!token.IsCancellationRequested)
+                    {
+                        Console.Clear();
+                        WriteDisplayFrame(0, frame);
+                        await Task.Delay(150);
+                    }
                 }
                 
             } while (!token.IsCancellationRequested);
             return;
         }
-        private void WriteFrame(int delay, string[] frame)
+        private void WriteDisplayFrame(int delay, string[] frame)
         {
             int i = 0;
             foreach (string line in frame)

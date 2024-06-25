@@ -22,7 +22,8 @@ namespace Infocalm
 
                 GameSession currentSession = new GameSession();
                 Console.WriteLine("Starting Game");
-                currentSession.PlayTheGame(currentInput);
+                Task outcome = currentSession.PlayTheGame();
+                outcome.Wait();
                 Console.WriteLine("Session Over");
                 Console.WriteLine("Start a New Session?");
                 overallState = currentInput.UpdateInputSelectionList(exitOptions);

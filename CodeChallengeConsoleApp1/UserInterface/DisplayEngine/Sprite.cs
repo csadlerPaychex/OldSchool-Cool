@@ -9,6 +9,8 @@ namespace UserInterface
 {
     internal class Sprite
     {
+        //Class meant for readying sprites for display. This can include adding animations, frames, etc.
+        //To Do: Move the display methods to a new class for enabling simple displays. 
         public string SpriteName { get; private set; }
         public string[] TextArt { get; private set; }
         public List<string[]> Frames { get; private set; } = new List<string[]>();
@@ -28,12 +30,6 @@ namespace UserInterface
         {
             //Write once, used for static in line displays.
             WriteSpriteFrame(TextArt, 0);
-        }
-        public async Task DisplaySprite(CancellationTokenSource token)
-        {
-            //If the call includes a cancellation token, it can be persisted. Otherwise, send to the draw once service.
-            do { await WritePersistedSprite(0, token); } while (!token.IsCancellationRequested);
-            return;
         }
         public void RollSprite(int speed)
         {
@@ -69,7 +65,8 @@ namespace UserInterface
                 spriteLines = DisplayLines;
             }
 
-            if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat(" ", DisplayLines - spriteLines)); }
+            //Add empty space to bring sprite up to display line size. 
+            if (spriteLines < DisplayLines) { currentSprite.AddRange(Enumerable.Repeat(new string(' ', DisplayWidth), DisplayLines - spriteLines)); }
 
             //Set sprite width to display width
             for (int i = 0; i < spriteLines; i++)
