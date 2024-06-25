@@ -40,8 +40,11 @@ namespace UserInterface
                     int i = 0;
                     foreach (string line in frame)
                     {
-                        Console.WriteLine(line + "|" + CurrentOptions.Options[i]);
-                        await Task.Delay(delay, token.Token);
+                        string optionLine = "";
+                        try { optionLine = CurrentOptions.Options[i]; }
+                        catch { }
+                        Console.WriteLine(line + optionLine);
+                        //await Task.Delay(delay, token.Token);
                         i++;
                     }
                     Console.WriteLine(new string('-', SpriteWidth));
@@ -52,7 +55,8 @@ namespace UserInterface
                     Console.WriteLine(CurrentInput.NewLine);
 
                     //Delay for 40 milliseconds to put FR at 25 per second
-                    { await Task.Delay(100, token.Token); Console.Clear(); }
+                    await Task.Delay(15, token.Token); 
+                    Console.Clear(); 
                 }
                 return;
             }

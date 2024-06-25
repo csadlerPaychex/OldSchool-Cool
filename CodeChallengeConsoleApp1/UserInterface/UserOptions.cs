@@ -13,8 +13,9 @@ namespace UserInterface
         public UserOptions(int displayLength = 20)
         {
             DisplayLength = displayLength;
+            //Options.AddRange(Enumerable.Repeat("", DisplayLength));  
         }
-        public void ReplaceOptions(List<string> options) { Options = options.GetRange(0,DisplayLength); }
+        public void ReplaceOptions(List<string> options) { Options = options; }
         public void ClearOptions() { Options.Clear(); }
     }
 }

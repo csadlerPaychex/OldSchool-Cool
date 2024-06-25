@@ -25,8 +25,9 @@ namespace UserInterface
                 selectionValid = selections.Contains(input);
                 if (!selectionValid)
                 {
+                    NewLine = "";
                     messages.AddMessage("Selection invalid, please choose from the options list");
-                    Console.WriteLine("Selection invalid, please choose from the options list");
+                    //Console.WriteLine("Selection invalid, please choose from the options list");
                 }
                 CurrentInput = input;
             } while (!selectionValid);
@@ -50,7 +51,7 @@ namespace UserInterface
                 {
                     inputLine += input;
                     NewLine = inputLine;
-                    if (!suppressOutput) Console.Write(input);
+                    //if (!suppressOutput) Console.Write(input);
                 }
             } while (completedInput == "");
             return completedInput;

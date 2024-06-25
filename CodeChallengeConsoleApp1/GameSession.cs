@@ -41,14 +41,13 @@ namespace DiceRollGame
             ManagedInput managedInput = new ManagedInput();
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
-            ManagedView diceRoll = new ManagedView(rollingDice, input);  
             UserInterface.UserInterface userInterface = new UserInterface.UserInterface(rollingDice, managedInput, userMessages, userOptions);
             //var guessTheRollDisplay = diceRoll.DisplayInterface(cancellationTokenSource);
             //var diceSprite = rollingDice.DisplaySprite(cancellationTokenSource);
             var displayScreen = userInterface.DisplayInterface(cancellationTokenSource);
             if (Console.ReadLine() == "e")
                 cancellationTokenSource.Cancel();
-            displayScreen.Wait(600000);
+            //displayScreen.Wait(600000);
             do
             {
                 //Console.WriteLine("Rolling the Dice");
@@ -62,19 +61,23 @@ namespace DiceRollGame
                 
                 do
                 {
-                    Console.WriteLine($"You have {remainingGuesses} guesses");
-                    Console.WriteLine("Make a guess");
-                    currentGuess = input.UpdateInputSelectionList(validGuesses);
+                    userMessages.AddMessage($"You have {remainingGuesses} guesses");
+                    //Console.WriteLine($"You have {remainingGuesses} guesses");
+                    userMessages.AddMessage("Make a guess");
+                    //Console.WriteLine("Make a guess");
+                    currentGuess = managedInput.ManageInputSelection(validGuesses, userMessages, userOptions); //input.UpdateInputSelectionList(validGuesses);
                     remainingGuesses--;
                 } while (currentGuess != correctGuess && remainingGuesses > 0);
                 bool victory =  currentGuess == correctGuess;
                 if (victory)
                 {
+                    cancellationTokenSource.Cancel();
                     Console.WriteLine("You Win!!!!");
                     Console.WriteLine($"Score: {remainingGuesses}");
                 }
                 else 
                 {
+                    cancellationTokenSource.Cancel();
                     Console.WriteLine("So Sorry, you FAILED!!!!");
                 }
                 Console.WriteLine("");
