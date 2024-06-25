@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface
 {
+    //Managed input must be paired with a display to be useful
     internal class ManagedInput
     {
         public string NewLine { get; private set; } = string.Empty;

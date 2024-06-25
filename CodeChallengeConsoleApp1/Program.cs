@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using UserInterface;
-namespace DiceRollGame
+namespace Infocalm
 {
     internal class Program
     {

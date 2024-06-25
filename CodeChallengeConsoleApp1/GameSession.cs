@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Services;
 using UserInterface;
 
-namespace DiceRollGame
+namespace Infocalm
 {
     internal class GameSession
     {
@@ -69,7 +69,6 @@ namespace DiceRollGame
                     userMessages.Clear();
                     userMessages.AddMessage("So Sorry, you FAILED!!!!");
                 }
-                //await displayScreen;
                 Console.ReadKey(true);
                 cancellationTokenSource.Cancel();
                 await displayScreen;
