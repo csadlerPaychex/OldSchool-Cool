@@ -26,10 +26,12 @@ namespace UserInterface
             TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
             RenderSprites(TextArt, 0);
         }
-        public void DisplaySprite()
+        public void UpdateSprite(string fileName)
         {
-            //Write once, used for static in line displays.
-            WriteSpriteFrame(TextArt, 0);
+            SpriteName = fileName;
+            TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
+            Frames.Clear();
+            RenderSprites(TextArt, 0);
         }
         public void RollSprite(int speed)
         {

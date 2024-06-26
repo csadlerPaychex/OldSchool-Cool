@@ -27,20 +27,30 @@ namespace UserInterface
             CurrentMessages = messages;
             CurrentOptions = options;
         }
+        //Use these to ensure sprite and message updates do not break write process
+        private struct Frames { public List<string[]> frames;}
+        private struct Options { public List<string[]> options; }
+        private struct Messages { public List<string[]> messages; }
         //Invoke to create a persistent display interface.
         public async Task DisplayInterface(CancellationTokenSource token)
         {
             do 
-            { 
-                foreach (string[] frame in CurrentSprite.Frames)
+            {
+                try
                 {
-                    if (!token.IsCancellationRequested)
+                    Frames spriteFrames = new Frames();
+                    spriteFrames.frames = CurrentSprite.Frames;
+                    foreach (string[] frame in spriteFrames.frames)
                     {
-                        Console.Clear();
-                        WriteDisplayFrame(0, frame);
-                        await Task.Delay(250);
+                        if (!token.IsCancellationRequested)
+                        {
+                            Console.Clear();
+                            WriteDisplayFrame(0, frame);
+                            await Task.Delay(150);
+                        }
                     }
                 }
+                catch { }
                 
             } while (!token.IsCancellationRequested);
             return;

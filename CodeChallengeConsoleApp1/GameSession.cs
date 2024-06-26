@@ -65,17 +65,23 @@ namespace Infocalm
                 if (victory)
                 {
                     userMessages.Clear();
+                    rollingDice.UpdateSprite("FireWorks");
                     userMessages.AddMessage("You Win!!!!");
                     userMessages.AddMessage($"Score: {remainingGuesses}");
+                    Console.ReadKey(true);
+                    gameCancelled.Cancel();
+                    await displayScreen;
                 }
                 else 
                 {
                     userMessages.Clear();
+                    rollingDice.UpdateSprite("GameOver");
                     userMessages.AddMessage("So Sorry, you FAILED!!!!");
+                    Console.ReadKey(true);
+                    gameCancelled.Cancel();
+                    await displayScreen;
                 }
-                gameCancelled.Cancel();
-                await displayScreen;
-                Console.ReadKey(true);
+                
                 Console.Clear();
                 Console.WriteLine("");
                 Console.WriteLine("************");
