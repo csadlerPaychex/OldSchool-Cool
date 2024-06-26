@@ -42,11 +42,14 @@ namespace Infocalm
             List<string> options = new List<string>() { "Yes", "No" };
             CancellationTokenSource gameCancelled = new CancellationTokenSource();
             Sprite rollingDice = new Sprite("RollingDice");
+            Sprite fireWorks = new Sprite("FireWorks");
+            Sprite graves = new Sprite("Graves");
             ManagedInput managedInput = new ManagedInput();
             UserMessages userMessages = new UserMessages();
             UserOptions userOptions = new UserOptions(20);
             DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
             Task displayScreen = userInterface.DisplayInterface(gameCancelled);
+
             do
             {
                 DiceRoll currentRoll = new DiceRoll(1, 6);
@@ -65,7 +68,7 @@ namespace Infocalm
                 if (victory)
                 {
                     userMessages.Clear();
-                    rollingDice.UpdateSprite("FireWorks");
+                    userInterface.UpdateSprite(fireWorks);
                     userMessages.AddMessage("You Win!!!!");
                     userMessages.AddMessage($"Score: {remainingGuesses}");
                     Console.ReadKey(true);
@@ -75,7 +78,7 @@ namespace Infocalm
                 else 
                 {
                     userMessages.Clear();
-                    rollingDice.UpdateSprite("GameOver");
+                    userInterface.UpdateSprite(graves);
                     userMessages.AddMessage("So Sorry, you FAILED!!!!");
                     Console.ReadKey(true);
                     gameCancelled.Cancel();

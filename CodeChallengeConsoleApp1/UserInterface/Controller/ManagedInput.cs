@@ -49,7 +49,7 @@ namespace UserInterface
                     NewLine = "";
                     completedInput = inputLine;
                 }
-                else if (input == "\b")
+                else if (input == "\b" && inputLine.Length > 0)
                 {
                     
                     inputLine = inputLine.Remove(inputLine.Length -1, 1);

@@ -18,6 +18,8 @@ namespace UserInterface
         //These will currently break if a sprite is updated to different size
         private readonly int DisplayLines;
         private readonly int SpriteWidth;
+        private static readonly int FrameDelay = 100;
+
         public DisplayEngine(Sprite sprite, ManagedInput input, UserMessages messages, UserOptions options)
         {
             CurrentSprite = sprite;
@@ -29,8 +31,8 @@ namespace UserInterface
         }
         //Use these to ensure sprite and message updates do not break write process
         private struct Frames { public List<string[]> frames;}
-        private struct Options { public List<string[]> options; }
-        private struct Messages { public List<string[]> messages; }
+        private struct Options { public List<string> options; }
+        private struct Messages { public List<string> messages; }
         //Invoke to create a persistent display interface.
         public async Task DisplayInterface(CancellationTokenSource token)
         {
@@ -42,11 +44,11 @@ namespace UserInterface
                     spriteFrames.frames = CurrentSprite.Frames;
                     foreach (string[] frame in spriteFrames.frames)
                     {
-                        if (!token.IsCancellationRequested)
+                        if (!token.IsCancellationRequested && spriteFrames.frames == CurrentSprite.Frames)
                         {
                             Console.Clear();
                             WriteDisplayFrame(0, frame);
-                            await Task.Delay(150);
+                            await Task.Delay(FrameDelay);
                         }
                     }
                 }
@@ -55,8 +57,18 @@ namespace UserInterface
             } while (!token.IsCancellationRequested);
             return;
         }
+        //This is the normal avenue for changing the sprite shown in the display engine.
+        public void UpdateSprite(Sprite sprite)
+        {
+            CurrentSprite = sprite;
+        }
         private void WriteDisplayFrame(int delay, string[] frame)
         {
+            //establish structs here in case list size of base object changes mid write
+            Options optionLines = new Options();
+            optionLines.options = CurrentOptions.Options;
+            Messages messages = new Messages();
+            messages.messages = CurrentMessages.Messages;
             int i = 0;
             foreach (string line in frame)
             {

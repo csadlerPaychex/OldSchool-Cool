@@ -26,13 +26,6 @@ namespace UserInterface
             TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
             RenderSprites(TextArt, 0);
         }
-        public void UpdateSprite(string fileName)
-        {
-            SpriteName = fileName;
-            TextArt = File.ReadAllLines($@"Resources\{fileName}.txt");
-            Frames.Clear();
-            RenderSprites(TextArt, 0);
-        }
         public void RollSprite(int speed)
         {
             WriteSpriteFrame(TextArt, speed);
