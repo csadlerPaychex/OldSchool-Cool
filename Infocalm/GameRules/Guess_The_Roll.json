@@ -1,0 +1,48 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "GameName": "Guess The Roll",
+  "GameType": "EventSearch",
+  "Resources": [
+    {
+      "resourceName": "Guesses",
+      "Description": "Chances remaining to guess the correct number",
+      "Amount": 3
+    }
+  ],
+  "Events": [
+    {
+      "EventName": "Start",
+      "EventType": "ENTRY_POINT",
+      "Sprite": "Banner",
+      "EventReactions": [
+        {
+          "ReactionName": "Start the Game",
+          "TriggeringOption": "Start",
+          "TriggeredEvent": "RollDice",
+          "ReactionMessages": "Rolling the dice, get ready!!!",
+          "ResourceReaction": []
+        },
+        {
+          "ReactionName": "Leaving the Game",
+          "TriggeringOption": "Exit",
+          "TriggeredEvent": "Exit",
+          "ReactionMessages": "OK, Bye Bye!!!",
+          "ResourceReaction": []
+        }
+      ]
+    },
+    {
+      "EventName": "Exit",
+      "EventType": "EXIT",
+      "Sprite": "Graves",
+      "EventReactions" []
+    }
+  ]
+}

@@ -13,7 +13,7 @@ namespace GameEngine
     {
         public string GameName { get; private set; }  
         public List<BGameEvent> Events {  get; private set; } 
-        public List<Tuple<string, int>> Resources { get; private set; }
+        public List<Resource> Resources { get; private set; }
         public BGame(string gameName) 
         {
             string gameFile = File.ReadAllText($@"Resources\{gameName}.json");
