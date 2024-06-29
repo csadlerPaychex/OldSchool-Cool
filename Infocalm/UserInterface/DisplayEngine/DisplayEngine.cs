@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infocalm.UserInterface.DisplayEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using UserInterface;
 
 namespace UserInterface
 {
-    internal class DisplayEngine
+    internal class DisplayEngine : IDisplayEngine
     {
         //Current Needs; Method to point to new sprite (needed in the case multiple sprites need to persist)
 

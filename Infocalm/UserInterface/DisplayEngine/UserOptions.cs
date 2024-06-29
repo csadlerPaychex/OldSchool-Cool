@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface
 {
-    internal class UserOptions
+    internal class UserOptions : IOptions
     {
         public List<string> Options { get; private set; } = new List<string>();
         public int DisplayLength { get; private set; }

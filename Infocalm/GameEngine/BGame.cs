@@ -12,14 +12,14 @@ namespace GameEngine
     internal class BGame
     {
         public string GameName { get; private set; }  
-        public List<BGameEvent> Events {  get; private set; } 
+        public List<Encounter> Encounters {  get; private set; } 
         public List<Resource> Resources { get; private set; }
         public BGame(string gameName) 
         {
             string gameFile = File.ReadAllText($@"Resources\{gameName}.json");
             BGame holder = JsonSerializer.Deserialize<BGame>(gameFile);
             GameName = holder.GameName;
-            Events = holder.Events;
+            Encounters = holder.Encounters;
             Resources = holder.Resources;
         }
 

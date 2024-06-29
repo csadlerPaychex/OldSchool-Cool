@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface
 {
-    internal class UserMessages
+    internal class UserMessages : IMessages
     {
         public List<string> Messages { get; private set; } = new List<string>();
 

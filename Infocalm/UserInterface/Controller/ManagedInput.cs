@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infocalm.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 namespace UserInterface
 {
     //Managed input must be paired with a display to be useful
-    internal class ManagedInput
+    internal class ManagedInput : IUserInput
     {
         public string NewLine { get; private set; } = string.Empty;
         public string CurrentInput { get; private set; } = string.Empty;
         public string LastInput { get; private set; } = string.Empty;
         public ManagedInput() { }
-        public string ManageInputSelection(List<string> selections, UserMessages messages, UserOptions options)
+        public string ManageInputSelection(List<string> selections, IMessages messages, IOptions options)
             //Manages the input process by ensuring only valid input is allowed to collect in the CurrentInput property
         {
             string input = "";

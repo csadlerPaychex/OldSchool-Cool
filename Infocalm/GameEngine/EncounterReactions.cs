@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    internal class BEventReactions
+    internal class EncounterReactions
     {
         public string ReactionName { get; private set; }
         public string TriggeringOption { get; private set; }
@@ -15,7 +15,7 @@ namespace GameEngine
         public List<string> ReactionMessages { get; private set; }
         public List<ResourceReaction> ResourceReactions {  get; private set; } 
 
-        public BEventReactions(string reactionName, string triggeringOption,  string triggeredEvent, string triggeredEventType, List<string> reactionMessages, List<ResourceReaction> resourceReaction)
+        public EncounterReactions(string reactionName, string triggeringOption,  string triggeredEvent, string triggeredEventType, List<string> reactionMessages, List<ResourceReaction> resourceReaction)
         {
             this.ReactionName = reactionName;
             this.TriggeringOption = triggeringOption;

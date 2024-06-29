@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Services;
 using UserInterface;
+using GameEngine;
 
 namespace Infocalm
 {
@@ -49,7 +50,8 @@ namespace Infocalm
             UserOptions userOptions = new UserOptions(20);
             DisplayEngine userInterface = new DisplayEngine(rollingDice, managedInput, userMessages, userOptions);
             Task displayScreen = userInterface.DisplayInterface(gameCancelled);
-
+            var test = new Encounter("test", "test", validGuesses, null, graves);
+            test.RunEncounter(userInterface, managedInput, userMessages, userOptions);
             do
             {
                 DiceRoll currentRoll = new DiceRoll(1, 6);
