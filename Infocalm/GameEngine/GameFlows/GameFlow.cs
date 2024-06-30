@@ -14,19 +14,26 @@ namespace GameEngine
         public string GameName { get; private set; }  
         public List<Encounter> Encounters {  get; private set; } 
         public List<Resource> Resources { get; private set; }
+        //public List<Encounter>? PreviousEncounters { get; private set; } = new List<Encounter>();
         public GameFlow(string gameName) 
         {
-            string gameFile = File.ReadAllText($@"Resources\{gameName}.json");
+            string gameFile = File.ReadAllText($@"GameRules\{gameName}.json");
             GameFlow holder = JsonSerializer.Deserialize<GameFlow>(gameFile);
-            GameName = holder.GameName;
+            GameName = gameName;
             Encounters = holder.Encounters;
             Resources = holder.Resources;
         }
+        public virtual void RunGame()
+        { 
 
-        //Loading all game events
-        private void LoadEvents() { }
+        }
+        private void RunEncounter(Encounter encounter)
+        {
 
-        //Loading all game resources
-        private void LoadResources() { }
+        }
+        private void ResourceCheck()
+        {
+            
+        }
     }
 }

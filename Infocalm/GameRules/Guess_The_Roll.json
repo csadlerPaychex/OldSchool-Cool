@@ -1,13 +1,6 @@
 {
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ],
-  "GameName": "Guess The Roll",
+  
+  "GameName": "Guess_The_Roll",
   "GameType": "EventSearch",
   "Resources": [
     {
@@ -16,10 +9,10 @@
       "Amount": 3
     }
   ],
-  "Events": [
+  "Encounters": [
     {
-      "EventName": "Start",
-      "EventType": "ENTRY_POINT",
+      "EncounterName": "Start",
+      "EncounterType": "ENTRY_POINT",
       "Sprite": "Banner",
       "EventReactions": [
         {
@@ -39,10 +32,10 @@
       ]
     },
     {
-      "EventName": "Exit",
-      "EventType": "EXIT",
+      "EncounterName": "Exit",
+      "EncounterType": "EXIT",
       "Sprite": "Graves",
-      "EventReactions" []
+      "EncounterReactions": []
     }
   ]
 }

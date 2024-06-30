@@ -24,6 +24,12 @@ namespace Infocalm
         }
         public async Task PlayTheGame()
         {
+            GameFlow gameFlow = new GameFlow("Guess_The_Roll");
+            foreach (Resource resource in gameFlow.Resources) 
+            { 
+                Console.WriteLine(resource.ResourceName);
+                Console.ReadKey(true);
+            }
             Console.WriteLine("Select from Available Game Types:");
 
             SimpleUserInput simpleInput = new SimpleUserInput();

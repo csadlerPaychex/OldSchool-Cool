@@ -27,6 +27,7 @@ namespace GameEngine
         public virtual Encounter RunEncounter(IDisplayEngine displayEngine, IUserInput inputInterface, IMessages messageInterface, IOptions optionInterface)
         {
             //Re-run the encounter if the current result does not provide a next encounter
+            //This could get us into a loop... Force encounter reactions to non null??
             Encounter nextEncounter = this;  
             displayEngine.UpdateSprite(Sprite);
 
@@ -61,7 +62,8 @@ namespace GameEngine
                     resourceReaction.UpdateResources();
                 }
                 messageInterface.AddMessages(reaction.ReactionMessages);
-                if (reaction.TriggeredEncounter != null) { nextEncounter = reaction.TriggeredEncounter; }
+                if (reaction.TriggeredEncounter != null) 
+                { nextEncounter = reaction.TriggeredEncounter; }
             }
             
             return nextEncounter;
