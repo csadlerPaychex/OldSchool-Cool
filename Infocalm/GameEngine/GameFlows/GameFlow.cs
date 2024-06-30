@@ -9,15 +9,15 @@ using UserInterface;
 namespace GameEngine
 {
     //Superclass to give basic structure to all games
-    internal class BGame
+    internal class GameFlow
     {
         public string GameName { get; private set; }  
         public List<Encounter> Encounters {  get; private set; } 
         public List<Resource> Resources { get; private set; }
-        public BGame(string gameName) 
+        public GameFlow(string gameName) 
         {
             string gameFile = File.ReadAllText($@"Resources\{gameName}.json");
-            BGame holder = JsonSerializer.Deserialize<BGame>(gameFile);
+            GameFlow holder = JsonSerializer.Deserialize<GameFlow>(gameFile);
             GameName = holder.GameName;
             Encounters = holder.Encounters;
             Resources = holder.Resources;
