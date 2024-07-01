@@ -11,9 +11,9 @@ namespace UserInterface
     {
         //Class meant for readying sprites for display. This can include adding animations, frames, etc.
         //To Do: Move the display methods to a new class for enabling simple displays. 
-        public string SpriteName { get; private set; }
-        public string[] TextArt { get; private set; }
-        public List<string[]> Frames { get; private set; } = new List<string[]>();
+        public string SpriteName { get; set; }
+        public string[] TextArt { get; set; }
+        public List<string[]> Frames { get; set; } = new List<string[]>();
         //Dictates # of lines to be used in a sprite display
         public readonly int DisplayLines;
         public readonly int DisplayWidth;

@@ -1,12 +1,12 @@
 {
-  
   "GameName": "Guess_The_Roll",
   "GameType": "EventSearch",
   "Resources": [
     {
-      "resourceName": "Guesses",
+      "ResourceName": "Guesses",
       "Description": "Chances remaining to guess the correct number",
-      "Amount": 3
+      "Amount": 3,
+      "LoseIfZero":  true
     }
   ],
   "Encounters": [
@@ -14,19 +14,19 @@
       "EncounterName": "Start",
       "EncounterType": "ENTRY_POINT",
       "Sprite": "Banner",
-      "EventReactions": [
+      "EncounterReactions": [
         {
           "ReactionName": "Start the Game",
           "TriggeringOption": "Start",
           "TriggeredEvent": "RollDice",
-          "ReactionMessages": "Rolling the dice, get ready!!!",
+          "ReactionMessages": ["Rolling the dice, get ready!!!"],
           "ResourceReaction": []
         },
         {
           "ReactionName": "Leaving the Game",
           "TriggeringOption": "Exit",
           "TriggeredEvent": "Exit",
-          "ReactionMessages": "OK, Bye Bye!!!",
+          "ReactionMessages": ["OK, Bye Bye!!!"],
           "ResourceReaction": []
         }
       ]

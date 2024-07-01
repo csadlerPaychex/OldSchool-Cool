@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Services;
 using UserInterface;
 using GameEngine;
+using System.Text.Json;
 
 namespace Infocalm
 {
@@ -24,7 +25,9 @@ namespace Infocalm
         }
         public async Task PlayTheGame()
         {
-            GameFlow gameFlow = new GameFlow("Guess_The_Roll");
+            string gameFile = File.ReadAllText(@"GameRules\Guess_The_Roll.json");
+            GameFlow? gameFlow = JsonSerializer.Deserialize<GameFlow>(gameFile)!;
+            //GameFlow gameFlow = new GameFlow("Guess_The_Roll");
             foreach (Resource resource in gameFlow.Resources) 
             { 
                 Console.WriteLine(resource.ResourceName);

@@ -11,18 +11,11 @@ namespace GameEngine
     //Superclass to give basic structure to all games
     internal class GameFlow
     {
-        public string GameName { get; private set; }  
-        public List<Encounter> Encounters {  get; private set; } 
-        public List<Resource> Resources { get; private set; }
-        //public List<Encounter>? PreviousEncounters { get; private set; } = new List<Encounter>();
-        public GameFlow(string gameName) 
-        {
-            string gameFile = File.ReadAllText($@"GameRules\{gameName}.json");
-            GameFlow holder = JsonSerializer.Deserialize<GameFlow>(gameFile);
-            GameName = gameName;
-            Encounters = holder.Encounters;
-            Resources = holder.Resources;
-        }
+        public string GameName { get; set; }  
+        public string? GameType { get; set; }
+        public List<Encounter>? Encounters {  get; set; } 
+        public List<Resource>? Resources { get; set; }
+        public List<Encounter>? PreviousEncounters { get; set; } = new List<Encounter>();
         public virtual void RunGame()
         { 
 

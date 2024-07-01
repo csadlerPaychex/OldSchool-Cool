@@ -11,47 +11,53 @@ namespace GameEngine
 {
     internal class Encounter
     {
-        public string EncounterName {  get; private set; }
-        public string EncounterType { get; private set; }
-        public Sprite Sprite { get; private set; }
-        public List<EncounterReaction>? EncounterReactions { get; private set; }
-        public List<string>? EncounterMessages { get; private set; }
-        public Encounter(string eventName, string eventType, List<string> eventOptions, List<EncounterReaction> eventReactions, Sprite sprite) 
-        {
-            EncounterName = eventName;
-            EncounterType = eventType;
-            EncounterReactions = eventReactions;
-            Sprite = sprite;
-        }
-        //Takes in interfaces for managing encounter, and returns the next encounter based on the reactions
+        public string EncounterName {  get; set; }
+        public static string EncounterType { get; set; } 
+        public string Sprite { get; set; }
+        public List<EncounterReaction>? EncounterReactions { get; set; }
+        public List<string>? EncounterMessages { get; set; }
         public virtual Encounter RunEncounter(IDisplayEngine displayEngine, IUserInput inputInterface, IMessages messageInterface, IOptions optionInterface)
         {
-            //Re-run the encounter if the current result does not provide a next encounter
-            //This could get us into a loop... Force encounter reactions to non null??
-            Encounter nextEncounter = this;  
-            displayEngine.UpdateSprite(Sprite);
+            Sprite currentSprite = new Sprite(Sprite);
+            displayEngine.UpdateSprite(currentSprite);
+            List<string> cleanedOptions = CleanOptions(optionInterface);
+            DisplayMessages(messageInterface);
 
-            //clean options and messages and prepare for display
+            string encounterChoice = GetUserChoice(inputInterface, messageInterface, optionInterface, cleanedOptions);
+
+            //Process game reactions, and return implied encounter to the game flow
+            return ProcessEncounterReactions(messageInterface, encounterChoice); ;
+        }
+        private string GetUserChoice(IUserInput inputInterface, IMessages messageInterface, IOptions optionInterface, List<string> cleanedOptions)
+        {
+            string encounterChoice = inputInterface
+                .ManageInputSelection(cleanedOptions, messageInterface, optionInterface);
+            return encounterChoice;
+        }
+        private List<string> CleanOptions(IOptions optionInterface)
+        {
             var encounterOptions = EncounterReactions?.Select(options => options.TriggeringOption);
             List<string> cleanedOptions = new List<string>(); //Used to ensure list is not null
-            if (encounterOptions!= null && encounterOptions.Any()) 
+            if (encounterOptions != null && encounterOptions.Any())
             {
                 cleanedOptions.AddRange(encounterOptions);
-                optionInterface.ReplaceOptions(cleanedOptions);
             }
-
+            return cleanedOptions; //This list may be empty, but there may be default selections for the user
+        }
+        private void DisplayMessages(IMessages messageInterface)
+        {
             if (EncounterMessages != null && EncounterMessages.Any())
             {
                 messageInterface.Clear();
                 messageInterface.AddMessages(EncounterMessages);
             }
             //This allows configuration data to have an empty list without breaking downstream services
-            else { EncounterMessages = new List<string>() ; }
-
-            string encounterChoice = inputInterface
-                .ManageInputSelection(cleanedOptions, messageInterface, optionInterface);
-
-            //If there are encounter reactions, process these
+            else { EncounterMessages = new List<string>(); }
+        }
+        private Encounter ProcessEncounterReactions(IMessages messageInterface, string encounterChoice)
+        {
+            //Re-run the encounter if the current result does not provide a next encounter. This allows for implicit event looping, which may cause some design issues
+            Encounter nextEncounter = this;
             if (EncounterReactions != null && EncounterReactions.Any())
             {
                 EncounterReaction reaction = EncounterReactions.
@@ -62,10 +68,9 @@ namespace GameEngine
                     resourceReaction.UpdateResources();
                 }
                 messageInterface.AddMessages(reaction.ReactionMessages);
-                if (reaction.TriggeredEncounter != null) 
+                if (reaction.TriggeredEncounter != null)
                 { nextEncounter = reaction.TriggeredEncounter; }
             }
-            
             return nextEncounter;
         }
 
