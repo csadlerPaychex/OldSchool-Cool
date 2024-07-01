@@ -8,16 +8,15 @@ namespace GameEngine
 {
     internal class ResourceReaction
     {
-        public Resource Resource { get; private set; }
-        public int Delta { get; private set; }
-        public ResourceReaction(Resource resource, int delta)
-        {
-            Resource = resource;
-            Delta = delta;
-        }
+        //JSON reader will create a new resource object. Let the encounter refer to the correct object
+        public Resource? Resource { get; private set; } 
+        public int Delta { get; set; }
         public virtual void UpdateResources()
         {
-            Resource.Amount = Resource.Amount + Delta;
+            if (Resource.Amount + Delta > 0)
+            {
+                Resource.Amount = Resource.Amount + Delta;
+            }
         }
     }
 }

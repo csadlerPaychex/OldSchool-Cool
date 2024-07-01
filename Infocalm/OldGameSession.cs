@@ -11,14 +11,14 @@ using System.Text.Json;
 
 namespace Infocalm
 {
-    internal class GameSession
+    internal class OldGameSession
     {
         public string SessionGameType { get; private set; }
         public string GameState { get; private set; }
         //Currently there are two states, ACTIVE and INACTIVE
         private List<string> GameTypes { get; } = new List<string>() { "Guess The Roll" };
 
-        public GameSession() 
+        public OldGameSession() 
         {
             SessionGameType = "SESSION";
             GameState = "ACTIVE";

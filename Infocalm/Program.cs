@@ -20,7 +20,7 @@ namespace Infocalm
             bannerRun.Wait(5000);
             do {
 
-                GameSession currentSession = new GameSession();
+                OldGameSession currentSession = new OldGameSession();
                 Console.WriteLine("Starting Game");
                 Task outcome = currentSession.PlayTheGame();
                 outcome.Wait();
