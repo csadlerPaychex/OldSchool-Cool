@@ -11,12 +11,12 @@ namespace GameEngine
     //Superclass to give basic structure to all games
     internal class GameFlow
     {
-        public string GameName { get; set; }  
+        public required string GameName { get; set; }  
         public string? GameType { get; set; }
         public List<Encounter>? Encounters {  get; set; } 
         public List<Resource>? Resources { get; set; }
         public List<Encounter>? PreviousEncounters { get; set; } = new List<Encounter>();
-        public virtual void RunGame()
+        public virtual void RunGame(GameSession gameSession)
         { 
 
         }

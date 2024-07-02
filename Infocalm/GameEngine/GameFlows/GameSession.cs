@@ -13,10 +13,18 @@ namespace GameEngine
     //update the same set of assets. The session will be passed to methods called when running a game flow or encounter
     internal class GameSession
     {
-        public GameFlow GameFlow {  get; private set; }
-        public IDisplayEngine DisplayEngine { get; private set; }
-        public IUserInput UserInput { get; private set; }
-        public IOptions Options { get; private set; }
-        public IMessages Messages { get; private set; }
+        public readonly GameFlow _gameFlow;
+        public readonly IDisplayEngine _displayEngine;
+        public readonly IUserInput _userInput;
+        public readonly IOptions _options;
+        public readonly IMessages _messages;
+        public GameSession(GameFlow gameFlow, IDisplayEngine displayEngine, IUserInput userInput, IOptions options, IMessages messages)
+        {
+            _gameFlow = gameFlow;
+            _displayEngine = displayEngine;
+            _userInput = userInput;
+            _options = options;
+            _messages = messages;
+        }
     }
 }
