@@ -13,27 +13,25 @@ namespace UserInterface
         //Current Needs; Method to point to new sprite (needed in the case multiple sprites need to persist)
 
         public Sprite CurrentSprite { get; private set; }
-        public ManagedInput CurrentInput { get; private set; }
-        public UserMessages CurrentMessages { get; private set; }
-        public UserOptions CurrentOptions { get; private set; }
+        public IUserInput _userInput { get; private set; }
+        public IMessages _messages { get; private set; }
+        public IOptions _options { get; private set; }
         //These will currently break if a sprite is updated to different size
         private readonly int DisplayLines;
         private readonly int SpriteWidth;
         private static readonly int FrameDelay = 100;
 
-        public DisplayEngine(Sprite sprite, ManagedInput input, UserMessages messages, UserOptions options)
+        public DisplayEngine(Sprite sprite, IUserInput input, IMessages messages, IOptions options)
         {
             CurrentSprite = sprite;
-            CurrentInput = input;
+            _userInput = input;
             DisplayLines = sprite.DisplayLines;
             SpriteWidth = sprite.DisplayWidth;
-            CurrentMessages = messages;
-            CurrentOptions = options;
+            _messages = messages;
+            _options = options;
         }
         //Use these to ensure sprite and message updates do not break write process
         private struct Frames { public List<string[]> frames;}
-        private struct Options { public List<string> options; }
-        private struct Messages { public List<string> messages; }
         //Invoke to create a persistent display interface.
         public async Task DisplayInterface(CancellationTokenSource token)
         {
@@ -41,6 +39,7 @@ namespace UserInterface
             {
                 try
                 {
+                    //Allows the sprite to be changed out mid write without cancelling the display
                     Frames spriteFrames = new Frames();
                     spriteFrames.frames = CurrentSprite.Frames;
                     foreach (string[] frame in spriteFrames.frames)
@@ -65,27 +64,24 @@ namespace UserInterface
         }
         private void WriteDisplayFrame(int delay, string[] frame)
         {
-            //establish structs here in case list size of base object changes mid write
-            Options optionLines = new Options();
-            optionLines.options = CurrentOptions.Options;
-            Messages messages = new Messages();
-            messages.messages = CurrentMessages.Messages;
+            List<string> optionLines = _options.GetOptions();
+            List<string>  messages = _messages.GetMessages();
             int i = 0;
             foreach (string line in frame)
             {
                 string optionLine = "";
-                try { optionLine = CurrentOptions.Options[i]; }
+                try { optionLine = optionLines[i]; }
                 catch { }
                 Console.WriteLine(line + "|" + optionLine);
                 Thread.Sleep(delay);
                 i++;
             }
             Console.WriteLine(new string('-', SpriteWidth));
-            foreach (string line in CurrentMessages.Messages)
+            foreach (string line in messages)
             {
                 Console.WriteLine(line);
             }
-            Console.WriteLine(CurrentInput.NewLine);
+            Console.WriteLine(_userInput.GetNewLine());
         }
     }
 }

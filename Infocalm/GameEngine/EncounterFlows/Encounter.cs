@@ -22,6 +22,7 @@ namespace GameEngine
             gameSession._displayEngine.UpdateSprite(currentSprite);
             List<string> cleanedOptions = CleanOptions(gameSession._options);
             DisplayMessages(gameSession._messages);
+            gameSession._options.ReplaceOptions(cleanedOptions);
 
             string encounterChoice = GetUserChoice(gameSession, cleanedOptions);
 
@@ -31,7 +32,7 @@ namespace GameEngine
         internal string GetUserChoice(GameSession gameSession, List<string> cleanedOptions)
         {
             string encounterChoice = gameSession._userInput 
-                .ManageInputSelection(cleanedOptions, gameSession._messages, gameSession._options);
+                .ManageInputSelection(cleanedOptions, gameSession._messages);
             return encounterChoice;
         }
         internal List<string> CleanOptions(IOptions optionInterface)
@@ -58,6 +59,7 @@ namespace GameEngine
         {
             //Re-run the encounter if the current result does not provide a next encounter. This allows for implicit event looping, which may cause some design issues
             string nextEncounter = this.EncounterName;
+            
             EncounterReaction reaction = EncounterReactions.
                 Single(option => option.TriggeringOption == encounterChoice);
             if (reaction.ResourceReactions != null && reaction.ResourceReactions.Any()) 

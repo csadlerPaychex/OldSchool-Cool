@@ -12,5 +12,6 @@ namespace UserInterface
         public void AddMessages(List<string> messages, bool clear = false);
         public void RemoveMessage(string message);
         public void Clear();
+        public List<string> GetMessages();
     }
 }

@@ -10,5 +10,6 @@ namespace UserInterface
     {
         public void ReplaceOptions(List<string> options);
         public void ClearOptions();
+        public List<string> GetOptions();
     }
 }

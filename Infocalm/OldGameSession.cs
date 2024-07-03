@@ -72,7 +72,7 @@ namespace Infocalm
                 {
                     userMessages.AddMessage($"You have {remainingGuesses} guesses");
                     userMessages.AddMessage("Make a guess");
-                    currentGuess = managedInput.ManageInputSelection(validGuesses, userMessages, userOptions);
+                    currentGuess = managedInput.ManageInputSelection(validGuesses, userMessages);
                     remainingGuesses--;
                 } while (currentGuess != correctGuess && remainingGuesses > 0);
                 bool victory =  currentGuess == correctGuess;

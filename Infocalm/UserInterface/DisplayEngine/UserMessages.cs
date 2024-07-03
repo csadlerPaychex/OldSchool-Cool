@@ -32,6 +32,7 @@ namespace UserInterface
         }
         public void RemoveMessage(string message) { Messages.Remove(message); }
         public void Clear() { Messages.Clear(); }
+        public List<string> GetMessages() { return Messages; }
 
     }
 }

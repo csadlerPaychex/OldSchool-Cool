@@ -21,12 +21,19 @@ namespace GameEngine
         public List<string>? FlavorText { get; set; } = new List<string>();
         public override string RunEncounter(GameSession gameSession)
         {
+            string nextEncounter = this.EncounterName;
             Sprite currentSprite = new Sprite(Sprite);
             gameSession._displayEngine.UpdateSprite(currentSprite);
             List<string> cleanedOptions = CleanOptions(gameSession._options);
             DisplayMessages(gameSession._messages);
+            //gameSession._options.ReplaceOptions(cleanedOptions);
+
+
             GenerateWins();
 
+
+
+            return nextEncounter;
         }
         internal void GenerateWins()
         {
@@ -41,24 +48,30 @@ namespace GameEngine
                 }
             }
         }
-        internal List<string> PopulateOptions(GameSession gameSession)
+        internal List<string> PopulateOptions()
         {
+            List<string> numbers =
+                    Enumerable.Range(MinimumGuess, MaximumGuess).Select(number => number.ToString()).ToList<string>();
             List<string> options = new List<string>();
             if (FlavorText == null)
             {
-                List<string> numbers = 
-                    Enumerable.Range(MinimumGuess, MaximumGuess).Select(number => number.ToString()).ToList<string>();
                 options = numbers; 
             }
             else 
             {
-                double calc = FlavorText.Count / (MaximumGuess - MinimumGuess - 1);
-                int repeats = ((int)Math.Ceiling(calc)); //
-                List<string> flavorCopies = FlavorText;
-
-                for (int i = MinimumGuess; i < MaximumGuess + 1; i++) 
+                int range = MaximumGuess - MinimumGuess - 1;
+                double calc = FlavorText.Count / range;
+                int repeats = ((int)Math.Ceiling(calc)); //We are going to stretch the flavor text to enough new choices to populate every guess option
+                List<string> flavorCopies = new List<string>();
+                for (int i = 0; i < repeats; i++)
                 {
-                    options.Add(FlavorText[i]);
+                    flavorCopies.AddRange(FlavorText);
+                }
+                flavorCopies = flavorCopies.GetRange(0, range);
+                int n = 0;
+                foreach (string number in numbers) 
+                {
+                    numbers[n] = number + " " + flavorCopies[n];
                 }
             }
             return options;

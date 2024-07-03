@@ -14,12 +14,12 @@ namespace UserInterface
         public string CurrentInput { get; private set; } = string.Empty;
         public string LastInput { get; private set; } = string.Empty;
         public ManagedInput() { }
-        public string ManageInputSelection(List<string> selections, IMessages messages, IOptions options)
+        public string GetNewLine () { return NewLine; }
+        public string ManageInputSelection(List<string> selections, IMessages messages)
             //Manages the input process by ensuring only valid input is allowed to collect in the CurrentInput property
         {
             string input = "";
             bool selectionValid = false;
-            options.ReplaceOptions(selections);
             do
             {
                 input = gatherInput();
@@ -33,7 +33,6 @@ namespace UserInterface
                 }
                 CurrentInput = input;
             } while (!selectionValid);
-            options.ClearOptions();
             return input;
         }
         private string gatherInput(bool suppressOutput = false)

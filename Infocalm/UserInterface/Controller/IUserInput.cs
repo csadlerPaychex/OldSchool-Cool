@@ -9,6 +9,7 @@ namespace UserInterface
 {
     internal interface IUserInput
     {
-        public string ManageInputSelection(List<string> selections, IMessages messages, IOptions options);
+        public string ManageInputSelection(List<string> selections, IMessages messages);
+        public string GetNewLine();
     }
 }
