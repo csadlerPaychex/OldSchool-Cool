@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using UserInterface;
 
 namespace GameEngine
 {
+    [JsonDerivedType(typeof(Encounter), typeDiscriminator: "base")]
     internal class Encounter
     {
-        public required string EncounterName {  get; set; } //How are we going to enforce uniqueness here? 
-        public static string EncounterType { get; set; } = "BaseEncounter"; 
+        public required string EncounterName {  get; set; } //How are we going to enforce uniqueness here?
         public required string Sprite { get; set; }
         public required List<EncounterReaction> EncounterReactions { get; set; }
         public List<string>? EncounterMessages { get; set; }
@@ -20,22 +21,16 @@ namespace GameEngine
         {
             Sprite currentSprite = new Sprite(Sprite);
             gameSession._displayEngine.UpdateSprite(currentSprite);
-            List<string> cleanedOptions = CleanOptions(gameSession._options);
+            List<string> cleanedOptions = CleanOptions();
             DisplayMessages(gameSession._messages);
             gameSession._options.ReplaceOptions(cleanedOptions);
-
-            string encounterChoice = GetUserChoice(gameSession, cleanedOptions);
+            string encounterChoice = gameSession._userInput
+                .ManageInputSelection(cleanedOptions, gameSession._messages);
 
             //Process game reactions, and return implied encounter to the game flow
-            return ProcessEncounterReactions(gameSession._messages, encounterChoice); ;
+            return ProcessEncounterReactions(gameSession._messages, encounterChoice);
         }
-        internal string GetUserChoice(GameSession gameSession, List<string> cleanedOptions)
-        {
-            string encounterChoice = gameSession._userInput 
-                .ManageInputSelection(cleanedOptions, gameSession._messages);
-            return encounterChoice;
-        }
-        internal List<string> CleanOptions(IOptions optionInterface)
+        internal virtual List<string> CleanOptions()
         {
             var encounterOptions = EncounterReactions?.Select(options => options.TriggeringOption);
             List<string> cleanedOptions = new List<string>(); //Used to ensure list is not null
@@ -55,7 +50,7 @@ namespace GameEngine
             //This allows configuration data to have an empty list without breaking downstream services
             else { EncounterMessages = new List<string>(); }
         }
-        internal string ProcessEncounterReactions(IMessages messageInterface, string encounterChoice)
+        internal virtual string ProcessEncounterReactions(IMessages messageInterface, string encounterChoice)
         {
             //Re-run the encounter if the current result does not provide a next encounter. This allows for implicit event looping, which may cause some design issues
             string nextEncounter = this.EncounterName;
